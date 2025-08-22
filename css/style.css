@@ -1,1 +1,11 @@
 /* nosso estilo css */
+
+@charset "utf8";
+
+body{
+  
+}
+.fundo-fixo{
+    background: url(../images/chrurras-thekeg.png) no-repeat fixed;
+    -webkit-background-size: cover;
+}
