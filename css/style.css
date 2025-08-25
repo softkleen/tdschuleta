@@ -3,8 +3,8 @@
 @charset "utf8";
 
 .fundo-fixo{
-    background: url(../images/chrurras-thekeg.png) no-repeat fixed;
-    -webkit-background-size: cover;
+    /* background: url(../images/chrurras-thekeg.png) no-repeat fixed;
+    -webkit-background-size: cover; */
 }
 main{
     padding-top: 80px;
