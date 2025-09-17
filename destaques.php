@@ -41,7 +41,7 @@ $linhas = count($produtos);
             </div>
           </div>
           <!-- Final Card Produto -->
-           <?php endforeach;?>
+           <?php endforeach?>
         </div> <!-- final da row-->
 <?php }?>
 </section>

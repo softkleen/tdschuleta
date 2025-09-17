@@ -1,5 +1,5 @@
 <?php 
-include "class/db.php"; // teste ok
+include_once "class/db.php"; // teste ok
 
 $pdo = getConnection(); // ok
 $tipo_lista = $pdo->query("select * from tipos");
@@ -38,7 +38,7 @@ $tipos = $tipo_lista->fetchAll();
                 <a href="#destaques" class="nav-link">DESTAQUES</a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">PRODUTOS</a>
+                <a href="#produtos" class="nav-link">PRODUTOS</a>
               </li>
               <li class="nav-item dropdown">
                 <a
