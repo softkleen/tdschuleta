@@ -71,21 +71,14 @@ class Usuario{
         return false;
     }
     // efetuar login
-    public function efetuarLogin(string $loginInformado, string $senhaInformada):bool{
+    public function efetuarLogin(string $loginInformado, string $senhaInformada):array{
         $sql = "select * from usuarios where login = :login and senha = md5(:senha)";
         $cmd = $this->pdo->prepare($sql);
         $cmd->bindValue(":login", $loginInformado);
         $cmd->bindValue(":senha", $senhaInformada);
         $cmd->execute();
-        if($cmd->rowCount() > 0){
-            $dados = $cmd->fetch(PDO::FETCH_ASSOC);
-            $this->id = $dados['id'];
-            $this->login = $dados['login'];
-            $this->senha = $dados['senha'];
-            $this->nivel = $dados['nivel'];
-            return true;
-        }
-        return false;
+        $dados = $cmd->fetch(PDO::FETCH_ASSOC);
+        return $dados;
     }
 
         // Atualizar usuário

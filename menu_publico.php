@@ -30,7 +30,7 @@ $tipos = $tipo_lista->fetchAll();
           <div class="collapse navbar-collapse" id="menupublico">
             <ul class="navbar-nav ms-auto mb-2 mb-md-0">
               <li class="nav-item">
-                <a href="index.php" class="nav-link active" aria-current="page">
+                <a href="/index.php" class="nav-link active" aria-current="page">
                   <i class="bi bi-house-door-fill"></i>&nbsp;HOME
                 </a>
               </li>
@@ -76,7 +76,7 @@ $tipos = $tipo_lista->fetchAll();
                 </form>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="admin/index.php" class="nav-link">
                   <i class="bi bi-person-fill"></i>&nbsp;ADMIN/CLIENTE
                 </a>
               </li>
