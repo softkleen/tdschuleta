@@ -61,12 +61,13 @@ $tipos = $tipo_lista->fetchAll();
               </li>
   
               <li class="nav-item">
-                <form class="d-flex" role="search">
+                <form action="produtos_busca.php" method="get" class="d-flex" role="search">
                   <input
                     type="search"
                     class="form-control me-2"
                     placeholder="Buscar produto"
                     aria-label="Search"
+                    name="buscar"
                     required
                   />
                   <button class="btn btn-outline-light">

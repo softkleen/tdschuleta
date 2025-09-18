@@ -102,6 +102,18 @@ class Produto{
         // }
         return $dados;
     }
+
+ // buscar produtos por tipo_id 
+ public function buscarPorTipoId(int $tipoId):array{
+    $sql = "select * from vw_produtos where tipo_id = :tipo_id";
+    $cmd = $this->pdo->prepare($sql);
+    $cmd->bindValue(":tipo_id", $tipoId);
+    $cmd->execute();
+    $dados = $cmd->fetchAll();
+    return $dados;
+}
+
+
         // Atualizar produto
         public function atualizar(int $idUpdate):bool {
             $id = $idUpdate;

@@ -1,5 +1,5 @@
 <?php 
-include "class/produto.php";
+include_once "class/produto.php";
 $produto = new Produto();
 $produtos = $produto->listar(1); // 1 - retorna apenas o produtos em destaque / vazio - retorna todos
 $linhas = count($produtos);
