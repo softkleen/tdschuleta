@@ -1,6 +1,10 @@
 <?php 
 include 'acesso_com.php';
-
+include_once "../class/produto.php";
+$produto = new Produto();
+$produtos = $produto->listar();
+$linhas = count($produtos);
+// print_r($produtos);exit;
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -17,7 +21,7 @@ include 'acesso_com.php';
     <?php include 'menu_adm.php'; ?>
     <main class="container my-4">
         <h2 class="alert alert-danger">Lista de Produtos</h2>
-        <table class="table table-hover table-sm table-warning align-middle"> 
+        <table class="table table-hover table-sm table-success align-middle"> 
             <thead class="table-dark">
                 <tr>
                     <th class="d-none">ID</th>
@@ -36,28 +40,35 @@ include 'acesso_com.php';
             </thead>
             
             <tbody>
-           
+                    <?php foreach($produtos as $prod):?>
                     <tr>
                         <td class="d-none">
-                           
+                           <?=$prod['id']?>
                         </td>
                         <td>
-                           
+                           <?=$prod['rotulo']?>
                         </td>
                         <td>
-                           
+                           <?php 
+                            if($prod['destaque']){
+                                echo '<i class="bi bi-star-fill text-danger"></i>';
+                            }else{
+                                echo '<i class="bi bi-check-circle text-success"></i>';
+                            }
+                            echo '&nbsp;'.$prod['descricao'];
+                           ?>
                         </td>
                         <td>
-                            
+                            <?=$prod['resumo']?>
                         </td>
                         <td>
-                            
+                            <?=number_format($prod['valor'], 2, ',','.')?>
                         </td>
                         <td>
-                            <img src="../images/" width="100" class="img-fluid rounded">
+                            <img src="../images/<?=$prod['imagem']?>" width="200" class="img-fluid rounded">
                         </td>
                         <td>
-                            <a href="produtos_atualiza.php?id=" 
+                            <a href="produtos_atualiza.php?id=<?=$prod['id']?>" 
                                class="btn btn-warning btn-sm w-100 mb-1">
                                 <i class="bi bi-arrow-clockwise"></i>
                                 <span class="d-none d-sm-inline"> ALTERAR</span>    
@@ -66,16 +77,17 @@ include 'acesso_com.php';
                            
 
                             <button 
-                                data-nome=""
-                                data-id=""
-                                class="delete btn btn-danger btn-sm w-100"> 
-                                    
+                                data-nome="<?=$prod['descricao']?>"
+                                data-id="<?=$prod['id']?>"
+                                class="delete btn btn-danger btn-sm w-100
+                                 <?=$prod['destaque']?'d-none':''?>"
+                                > 
                                 <i class="bi bi-trash"></i>
-                                <span class="d-none d-sm-inline"> EXCLUIR</span>
+                                <span class="d-none d-sm-inline">EXCLUIR</span>
                             </button>
                         </td>
                     </tr>    
-                
+                <?php endforeach;//fecha foreach de produtos ?>
             </tbody>
         </table>
     </main>
