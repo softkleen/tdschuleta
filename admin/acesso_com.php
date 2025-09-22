@@ -4,6 +4,9 @@
 session_name('chulettaaa');
 session_start();
 
+// $_SESSION['login_usuario'] = "Professor Everson";
+// $_SESSION['nome_da_sessao'] = "chulettaaa";
+
 // 2 - Segurança: Verificar se a sessão é válida
 if(!isset($_SESSION['login_usuario'])){
     // Usuário não autenticado, redireciona para a tela de login

@@ -1,3 +1,32 @@
+<?php 
+require_once "../class/usuario.php";
+if($_POST){
+  $login = $_POST['login'];
+  $senha = $_POST['senha'];
+  $user = new Usuario();
+  $usuarioLogado = $user->efetuarLogin($login,$senha);
+  // print_r($usuarioLogado);
+  // exit;
+  if(count($usuarioLogado)>0){
+    if(!isset($_SESSION)){
+      session_name("chulettaaa");
+      session_start();
+    }
+    $_SESSION['login_usuario'] = $usuarioLogado['login'];
+    $_SESSION['nivel_usuario'] = $usuarioLogado['nivel'];
+    $_SESSION['nome_da_sessao'] = session_name();
+    if($usuarioLogado['nivel']=="adm"){
+      echo "<script>window.open('index.php','_self')</script>"; 
+    }elseif($usuarioLogado['nivel']=="cli"){
+      echo "<script>window.open('../cliente/index.php','_self')</script>"; 
+    }
+    
+  }
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
