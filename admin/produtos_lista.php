@@ -65,7 +65,7 @@ $linhas = count($produtos);
                             <?="R$".number_format($prod['valor'], 2, ',','.')?>
                         </td>
                         <td>
-                            <img src="../images/<?=$prod['imagem']?>" width="200" class="img-fluid rounded">
+                            <img src="../images/produtos/<?=$prod['imagem']?>" width="200" class="img-fluid rounded">
                         </td>
                         <td>
                             <a href="produtos_atualiza.php?id=<?=$prod['id']?>" 
