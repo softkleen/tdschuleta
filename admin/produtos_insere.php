@@ -1,6 +1,13 @@
 <?php 
 include 'acesso_com.php';
 include_once '../class/produto.php';
+include_once '../class/tipo.php'; // incluímos a classe Tipo
+
+// obtendo os tipos do banco
+$tipo = new Tipo();
+$listaTipos = $tipo->listar();
+
+
 if($_POST){
     if(isset($_POST['enviar'])){
         $nome_img = $_FILES['imagemfile']['name'];
@@ -21,9 +28,7 @@ if($_POST){
     }else{
         // lembrar de remover a imagem carregada para a pasta IMAGES        
     }
-
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -62,9 +67,12 @@ if($_POST){
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-list-task"></i></span>
                                 <select name="id_tipo" id="id_tipo" class="form-select" required>
-                                    <option value="1">Churrasco</option>
-                                    <option value="2">Sobremesa</option>
-                                    <option value="3">Bebidas</option>
+                                    <option value="">Selecione o Tipo</option>
+                                    <?php foreach($listaTipos as $t): ?>
+                                        <option value="<?= $t['id'] ?>">
+                                            <?= htmlspecialchars($t['rotulo']) ?> (<?= htmlspecialchars($t['sigla']) ?>)
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -137,5 +145,32 @@ if($_POST){
         </div>
     </div>
 </main>
+<!-- Script para imagem -->
+<script>
+    document.getElementById("imagemfile").onchange = function(){
+        var reader = new FileReader();
+        if(this.files[0].size>512000){
+            alert("A imagem deve ter no máximo 500KB");
+            $("#imagem").attr("src", "blank");
+            $("#imagem").hide();
+            $("#imagem").wrap('<form>').closest('form').get(0).reset();
+            $("#imagem").unwrap();
+            return false;
+        }
+        if(this.files[0].type.indexOf("image")==-1){
+            alert("Formato inválido! Escolha uma imagem.");
+            $("#imagem").attr("src", "blank");
+            $("#imagem").hide();
+            $("#imagem").wrap('<form>').closest('form').get(0).reset();
+            $("#imagem").unwrap();
+            return false;
+        }
+        reader.onload = function(e){
+            document.getElementById("imagem").src = e.target.result
+            $("#imagem").show();
+        } 
+        reader.readAsDataURL(this.files[0])
+    }
+</script>
 </body>
 </html>
