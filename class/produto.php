@@ -64,7 +64,6 @@ class Produto{
         $cmd->bindValue(":valor", $this->valor);
         $cmd->bindValue(":imagem", $this->imagem);
         $cmd->bindValue(":destaque", $this->destaque);
-        $cmd->execute();
         if($cmd->execute()){
             $this->id = $this->pdo->lastInsertId();
             return true;

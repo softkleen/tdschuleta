@@ -15,6 +15,8 @@ if($_POST){
         $rand = rand(100001, 999999);
         $dir_imagem = "../images/produtos/".$rand.$nome_img;
         move_uploaded_file($tmp_img, $dir_imagem);
+    
+    
     }
     $produto  = new Produto();
     $produto->setTipoId($_POST['id_tipo']);
@@ -23,11 +25,14 @@ if($_POST){
     $produto->setResumo($_POST['resumo']);
     $produto->setValor($_POST['valor']);
     $produto->setImagem($rand.$nome_img);
+
+
     if($produto->inserir()){
         header('location: produtos_lista.php');
     }else{
         // lembrar de remover a imagem carregada para a pasta IMAGES        
     }
+    
 }
 ?>
 <!DOCTYPE html>

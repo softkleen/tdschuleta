@@ -3,39 +3,7 @@ include 'acesso_com.php';
 include_once '../class/produto.php';
 include_once '../class/tipo.php';
 
-if($_POST){ // se o usuário clicou no botão atualizar
-    if ($_FILES['imagemfile']['name']) {// se o usuario escolher uma imagem
-        unlink("../images/produtos/".$_POST['imagem_atual']); // apaga a imagem atual
-        $nome_img = $_FILES['imagemfile']['name']; 
-        $tmp_img = $_FILES['imagemfile']['tmp_name'];
-        $rand = rand(100001,999999); 
-        $dir_img = "../images/produtos/".$rand.$nome_img;
-        move_uploaded_file($tmp_img,$dir_img);
-        $nome_img = $rand.$nome_img;
-    }else{
-        $nome_img = $_POST['imagem_atual'];
-    }
 
-    $produto  = new Produto();
-    $produto->setTipoId($_POST['id_tipo']);
-    $produto->setDestaque($_POST['destaque']);
-    $produto->setDescricao($_POST['descricao']);
-    $produto->setResumo($_POST['resumo']);
-    $produto->setValor($_POST['valor']);
-    $produto->setImagem($nome_img);
-    if($produto->atualizar($_POST['id'])){
-        header('location: produtos_lista.php');
-    }
-}
-
-$id_form = $_GET['id'] ?? 0;
-$produto = new Produto();
-$prod = $produto->buscarPorId($id_form);
-
-
-// selecionar a lista de tipos para preencher o <select>
-$tpo = new Tipo();
-$listaTipos = $tpo->listar();
 
 ?>
 <!DOCTYPE html>
@@ -80,12 +48,11 @@ $listaTipos = $tpo->listar();
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-list-task"></i></span>
                                 <select name="id_tipo" id="id_tipo" class="form-select" required>
-                                    <?php foreach($listaTipos as $t): ?>    
-                                        <option value="<?=$t['id']?>" 
-                                            <?php if($t['id'] == $prod['tipo_id']) echo "selected"; ?>>
-                                            <?= htmlspecialchars($t['rotulo']) ?> (<?= htmlspecialchars($t['sigla']) ?>)
+                                    <  
+                                        <option value="" >
+                                            
                                         </option>
-                                    <?php endforeach; ?>    
+                           
                                 </select>
                             </div>
                         </div>
@@ -96,13 +63,13 @@ $listaTipos = $tpo->listar();
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" 
                                     name="destaque" id="destaque_s" value="1" 
-                                    <?php echo $prod['destaque']=="1"?"checked":""; ?>>
+                                    >
                                 <label class="form-check-label" for="destaque_s">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" 
                                     name="destaque" id="destaque_n" value="0" 
-                                    <?php echo $prod['destaque']=="0"?"checked":""; ?>>
+                                    >
                                 <label class="form-check-label" for="destaque_n">Não</label>
                             </div>
                         </div>
@@ -114,7 +81,7 @@ $listaTipos = $tpo->listar();
                                 <span class="input-group-text"><i class="bi bi-egg-fried"></i></span>
                                 <input type="text" name="descricao" id="descricao" 
                                     class="form-control" maxlength="100"
-                                    value="<?php echo htmlspecialchars($prod['descricao']); ?>">
+                                    value="">
                             </div>
                         </div>
 
@@ -124,7 +91,7 @@ $listaTipos = $tpo->listar();
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-card-text"></i></span>
                                 <textarea name="resumo" id="resumo" rows="5"
-                                    class="form-control"><?= htmlspecialchars($prod['resumo']); ?></textarea>
+                                    class="form-control"></textarea>
                             </div>
                         </div>
 
@@ -135,14 +102,14 @@ $listaTipos = $tpo->listar();
                                 <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                 <input type="number" name="valor" id="valor" 
                                     class="form-control" required min="0" step="0.01"
-                                    value="<?= $prod['valor']; ?>">
+                                    value="">
                             </div>
                         </div>
 
                         <!-- Imagem Atual -->
                         <div class="mb-3">
                             <label class="form-label">Imagem Atual:</label><br>
-                            <img src="../images/produtos/<?=$prod['imagem']; ?>" 
+                            <img src="../images/produtos/" 
                                  alt="Imagem Atual" class="img-fluid mb-2" style="max-height:150px;">
                             <input type="hidden" name="imagem_atual" id="imagem_atual" value="<?=$prod['imagem']; ?>">
                         </div>
