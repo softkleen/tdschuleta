@@ -9,7 +9,7 @@ class Produto{
     private $resumo;
     private $valor;
     private $imagem;
-    private $destaque;
+    private bool $destaque;
     private $pdo;
     public function __construct(){
         $this->pdo  = getConnection(); // realiza a conexão durante a criação da instância (objeto) 
@@ -63,7 +63,7 @@ class Produto{
         $cmd->bindValue(":resumo", $this->resumo);
         $cmd->bindValue(":valor", $this->valor);
         $cmd->bindValue(":imagem", $this->imagem);
-        $cmd->bindValue(":destaque", $this->destaque);
+        $cmd->bindValue(":destaque",$this->destaque);
         if($cmd->execute()){
             $this->id = $this->pdo->lastInsertId();
             return true;
@@ -111,7 +111,7 @@ class Produto{
         }
         // Atualizar produto
         public function atualizar(int $idUpdate):bool {
-            $id = $idUpdate;
+            $this->id = $idUpdate;
             if(!$this->id) return false;
     
             $sql = "UPDATE produtos SET 
@@ -120,7 +120,7 @@ class Produto{
                 resumo = :resumo,
                 valor = :valor,
                 imagem = :imagem,
-                destaque = : destaque
+                destaque = ".($this->destaque==true?1:0)."
                 WHERE id = :id";
             $cmd = $this->pdo->prepare($sql);
             $cmd->bindValue(":tipo_id", $this->tipoId); // (C#) cmd.Paramenters.AddWithValue("splogin", Login);
@@ -128,9 +128,8 @@ class Produto{
             $cmd->bindValue(":resumo", $this->resumo);
             $cmd->bindValue(":valor", $this->valor);
             $cmd->bindValue(":imagem", $this->imagem);
-            $cmd->bindValue(":destaque", $this->destaque);
+            //$cmd->bindValue(":destaque",$this->destaque==true?1:0);
             $cmd->bindValue(":id", $this->id, PDO::PARAM_INT);
-    
             return $cmd->execute();
         }
         // Excluir produto

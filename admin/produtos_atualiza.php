@@ -4,6 +4,40 @@ include_once '../class/produto.php';
 include_once '../class/tipo.php';
 
 
+if($_POST){ // usuário clicou no botão atualizar
+    if($_FILES['imagemfile']['name']){ // se o usuário escolheu uma imagem
+        // deletar a imagem atul da pasta (esta decisão, poderá ser adiada para executar após a confirmação da alteração )
+        unlink("../images/produtos/".$_POST['imagem_atual']); // apaga a imagem ***
+        $nome_img = $_FILES['imagemfile']['name'];
+        $tmp_img = $_FILES['imagemfile']['tmp_name'];
+        $rand = rand(100001,999999);
+        $dir_img = "../images/produtos/".$rand.$nome_img;
+        move_uploaded_file($tmp_img, $dir_img);
+        $nome_img = $rand.$nome_img;
+    }else{
+        $nome_img = $_POST['imagem_atual'];
+    }
+    $produto = new Produto();
+    $produto->setTipoId($_POST['id_tipo']); 
+  
+    $produto->setDestaque($_POST['destaque']=="1"?true:false);
+    $produto->setDescricao($_POST['descricao']);
+    $produto->setResumo($_POST['resumo']);
+    $produto->setValor($_POST['valor']);
+    $produto->setImagem($nome_img);
+    $produto->atualizar($_POST['id']); 
+
+    header('location: produtos_lista.php');
+    exit;
+}
+
+$id_get = $_GET['id'];
+$produto = new Produto();
+$prod = $produto->buscarPorId($id_get);
+
+// selecionar a lista de tipos para preenchar o <select>
+$tp = new Tipo();
+$listaTipos = $tp->listar();
 
 ?>
 <!DOCTYPE html>
@@ -48,11 +82,13 @@ include_once '../class/tipo.php';
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-list-task"></i></span>
                                 <select name="id_tipo" id="id_tipo" class="form-select" required>
-                                    <  
-                                        <option value="" >
-                                            
+                                    <?php foreach($listaTipos as $tipo): ?> 
+                                        <option value="<?=$tipo['id']?>" 
+                                            <?php if($tipo['id'] == $prod['tipo_id']) echo 'selected' ?>
+                                            >
+                                            <?=htmlspecialchars($tipo['rotulo'])?>
                                         </option>
-                           
+                                    <?php endforeach; ?>    
                                 </select>
                             </div>
                         </div>
@@ -62,13 +98,15 @@ include_once '../class/tipo.php';
                             <label class="form-label">Destaque:</label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" 
-                                    name="destaque" id="destaque_s" value="1" 
+                                    name="destaque" id="destaque_s" value="1"
+                                    <?=$prod['destaque']=="1"?"checked":""?> 
                                     >
                                 <label class="form-check-label" for="destaque_s">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" 
-                                    name="destaque" id="destaque_n" value="0" 
+                                    name="destaque" id="destaque_n" value="0"
+                                    <?=$prod['destaque']=="0"?"checked":""?> 
                                     >
                                 <label class="form-check-label" for="destaque_n">Não</label>
                             </div>
@@ -81,7 +119,7 @@ include_once '../class/tipo.php';
                                 <span class="input-group-text"><i class="bi bi-egg-fried"></i></span>
                                 <input type="text" name="descricao" id="descricao" 
                                     class="form-control" maxlength="100"
-                                    value="">
+                                    value="<?=htmlspecialchars($prod['descricao'])?>">
                             </div>
                         </div>
 
@@ -91,7 +129,7 @@ include_once '../class/tipo.php';
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-card-text"></i></span>
                                 <textarea name="resumo" id="resumo" rows="5"
-                                    class="form-control"></textarea>
+                                    class="form-control"><?=htmlspecialchars($prod['resumo'])?></textarea>
                             </div>
                         </div>
 
@@ -102,14 +140,14 @@ include_once '../class/tipo.php';
                                 <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                 <input type="number" name="valor" id="valor" 
                                     class="form-control" required min="0" step="0.01"
-                                    value="">
+                                    value="<?=$prod['valor']?>">
                             </div>
                         </div>
 
                         <!-- Imagem Atual -->
                         <div class="mb-3">
                             <label class="form-label">Imagem Atual:</label><br>
-                            <img src="../images/produtos/" 
+                            <img src="../images/produtos/<?=$prod['imagem']?>" 
                                  alt="Imagem Atual" class="img-fluid mb-2" style="max-height:150px;">
                             <input type="hidden" name="imagem_atual" id="imagem_atual" value="<?=$prod['imagem']; ?>">
                         </div>
